@@ -81,6 +81,17 @@ public class RewardsServiceTest {
         assertEquals(10, rewards.getRewards());
     }
 
+    @Test
+    public void getCustomerRewardsTxAt100() {
+        Transaction tx = createTestTransaction();
+        tx.setProducts(createTestListOfProducts4());
+        when(mockTransactionRepo.findByCustomerId(any(Integer.class))).thenReturn(Collections.singletonList(tx));
+
+        Rewards rewards = underTest.getCustomerRewards("1");
+
+        assertEquals(50, rewards.getRewards());
+    }
+
     public Customer createTestCustomer() {
         Customer customer = new Customer();
         customer.setId(1);
@@ -160,6 +171,18 @@ public class RewardsServiceTest {
         testListOfProducts.add(p2);
         testListOfProducts.add(p3);
         testListOfProducts.add(p4);
+
+        return testListOfProducts;
+    }
+
+    public List<Product> createTestListOfProducts4() {
+        List<Product> testListOfProducts = new ArrayList<>();
+        Product p1 = new Product();
+        p1.setId(1);
+        p1.setProductName("NZXT H100");
+        p1.setProductPrice(BigDecimal.valueOf(100));
+
+        testListOfProducts.add(p1);
 
         return testListOfProducts;
     }
